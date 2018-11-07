@@ -20,6 +20,9 @@ let interval = null
 export default {
   name: 'flipCountdown',
   props: {
+    start: {
+      type: String
+    },
     deadline: {
       type: String
     },
@@ -41,7 +44,7 @@ export default {
   },
   data () {
     return {
-      now: Math.trunc(new Date().getTime() / 1000),
+      now: this.getNow(),
       date: null,
       diff: 0,
       show: false,
@@ -83,7 +86,7 @@ export default {
       throw new Error("Invalid props value, correct the 'deadline'")
     }
     interval = setInterval(() => {
-      this.now = Math.trunc(new Date().getTime() / 1000)
+      this.now = this.getNow()
     }, 1000)
   },
   mounted () {
@@ -151,6 +154,13 @@ export default {
           el.classList.add('flip')
         }
       }
+    },
+    getNow () {
+      if (this.start) {
+        return this.now = Math.trunc(new Date(this.start).getTime() / 1000)
+      }
+
+      return this.now = Math.trunc(new Date().getTime() / 1000)
     }
   },
   beforeDestroy () {
