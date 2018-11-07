@@ -85,8 +85,11 @@ export default {
     if (!this.date) {
       throw new Error("Invalid props value, correct the 'deadline'")
     }
+
+    let seconds = 0
+
     interval = setInterval(() => {
-      this.now = this.getNow()
+      this.now = this.getNow(seconds++)
     }, 1000)
   },
   mounted () {
@@ -155,9 +158,11 @@ export default {
         }
       }
     },
-    getNow () {
+    getNow (seconds = 0) {
       if (this.start) {
-        return this.now = Math.trunc(new Date(this.start).getTime() / 1000)
+        let date = new Date(this.start)
+        date.setSeconds(date.getSeconds() + seconds)
+        return this.now = Math.trunc(date / 1000)
       }
 
       return this.now = Math.trunc(new Date().getTime() / 1000)
